@@ -6,6 +6,7 @@ int main()
 {
 	carNode master;
 
+	system("pause");
 
 	return 0;
 }
