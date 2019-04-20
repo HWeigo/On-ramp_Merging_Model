@@ -6,12 +6,12 @@
 
 #define RISK_MODE
 
-#define min(A,B) ((A)<(B) ? (A):(B))
 
 struct carNode
 {
 	float v;
 	float x;
+	float last_v;
 	float amax;
 	float amin;
 	uint8_t line;
@@ -21,9 +21,9 @@ struct carNode
 typedef enum
 {
 	MERGE = 1,
-	NOTMERGE = 2,
+	KEEPLANE = 2,
 
-}MergeOption_e;
+}MergeState_e;
 
 typedef enum
 {
@@ -33,6 +33,10 @@ typedef enum
 	SLOWDOWN = 3,
 }SpeedMode_e;
 
+void MergeStateFSM(void);
 float calc_LineSafeDistance(carNode master, carNode other);
+float calc_BrakeDistance(carNode master);
+float calc_MMS(carNode master, carNode other);
+
 
 #endif
