@@ -1,20 +1,22 @@
-#include "onramp_merging.h"
-#include "calculation.h"
+#include "includes.h"
 
 MergeState_e MergeState = KEEPLANE;
 MergeState_e last_MergeState = KEEPLANE;
 
-void MergeStateFSM(Master_CarNode master, Other_CarNode other)
+Master_CarNode g_master;
+Other_CarNode g_other;
+
+void MergeStateFSM(void)
 {
 	switch (MergeState)
 	{
 	case KEEPLANE:
 	{
-		checkMergingCondition(master, other);
+		checkMergingCondition(g_master, g_other);
 	}break;
 	case PREPMERGE:
 	{
-		adjustSpeed_PREPMERGE();
+		adjustSpeed_PREP();
 	}break;
 	case MERGE:
 	{
@@ -35,17 +37,17 @@ void checkMergingCondition(Master_CarNode master, Other_CarNode other)
 	MMS = calc_MMS(master, other);
 
 	if (delta_x > MMS) MergeState = MERGE;
-	else adjustSpeed_KEEPLANE();
+	else adjustSpeed_KL();
 
 	return;
 }
 
-void adjustSpeed_PREPMERGE()
+void adjustSpeed_PREP()
 {
 
 }
 
-void adjustSpeed_KEEPLANE()
+void adjustSpeed_KL()
 {
 
 }

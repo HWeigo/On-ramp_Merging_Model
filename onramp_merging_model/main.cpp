@@ -1,10 +1,8 @@
-#include <iostream>
-#include "onramp_merging.h"
-using namespace std;
+#include "includes.h"
 
 int main()
 {
-	//carNode master;
+
 
 	system("pause");
 

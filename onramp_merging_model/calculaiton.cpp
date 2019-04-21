@@ -1,5 +1,4 @@
-#include "calculation.h"
-#include "onramp_merging.h"
+#include "includes.h"
 
 float calc_LineSafeDistance(Master_CarNode master, Other_CarNode other)
 {

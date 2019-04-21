@@ -1,9 +1,7 @@
 #ifndef __ONRAMP_MERGING_H
 #define __ONRAMP_MERGING_H
 
-#include "onramp_merging.h"
-//#include "calculation.h"
-#include <stdint.h>
+#include "includes.h"
 
 #define RISK_MODE
 
@@ -47,10 +45,11 @@ typedef enum
 	SLOWDOWN = 3,
 }SpeedMode_e;
 
-void MergeStateFSM(Master_CarNode master, Other_CarNode other);
+
+void MergeStateFSM(void);
 void checkMergingCondition(Master_CarNode master, Other_CarNode other);
 
-void adjustSpeed_KEEPLANE();
-void adjustSpeed_PREPMERGE();
+void adjustSpeed_KL();
+void adjustSpeed_PREP();
 
 #endif 
