@@ -21,9 +21,18 @@
     <ClCompile Include="onramp_merging.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="calculaiton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="onramp_merging.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="calculation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="includes.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

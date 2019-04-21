@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-	carNode master;
+	//carNode master;
 
 	system("pause");
 

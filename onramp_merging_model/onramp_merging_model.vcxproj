@@ -115,10 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="calculaiton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="onramp_merging.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="calculation.h" />
+    <ClInclude Include="includes.h" />
     <ClInclude Include="onramp_merging.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
