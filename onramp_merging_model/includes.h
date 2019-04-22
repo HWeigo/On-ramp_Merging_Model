@@ -8,9 +8,11 @@
 #include <iostream>
 #include <stdint.h>
 #include <cmath>
+#include <vector>
 
 #include "onramp_merging.h"
 #include "calculation.h"
+
 
 using namespace std;
 

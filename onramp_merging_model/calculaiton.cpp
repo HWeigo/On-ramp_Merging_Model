@@ -6,9 +6,9 @@ float calc_LineSafeDistance(Master_CarNode master, Other_CarNode other)
 	{
 		float tc, master_a;
 #ifdef RISK_MODE
-		master_a = master.amax;
+		master_a = master.a_max;
 #else
-		master_a = master.amin;
+		master_a = master.a_safe;
 #endif 
 		tc = (other.v - master.v) / master_a;
 
@@ -22,7 +22,7 @@ float calc_LineSafeDistance(Master_CarNode master, Other_CarNode other)
 
 float calc_BrakeDistance(Master_CarNode master)
 {
-	return master.v * master.v / (master.amin * 2);
+	return master.v * master.v / (master.a_safe * 2);
 }
 
 float calc_MMS(Master_CarNode master, Other_CarNode other)
