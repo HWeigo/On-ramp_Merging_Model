@@ -5,7 +5,15 @@
 
 #define RISK_MODE     //注释关闭冒险模式
 #define DEBUG
+
+/*********************************/
+
 const float d_Follow = 10; //安全跟车距离
+const float v_speedLimit = 90; //道路限速
+const float x_mergePoint = 1000; //汇流点坐标
+
+/*********************************/
+
 
 //声明类
 class Master_CarNode; 
@@ -21,20 +29,20 @@ class Other_CarNode;
 * \param length 车长
 * \param x_mergePoint 预计汇流点
 */
-const float x_mergePoint = 1000;
+
 class Master_CarNode
 {
 public:
 	float v_current;
 	float x_current = 0;
 	float a_safe;
-	float v_max = 0;
+	float v_max = v_speedLimit;
 	float v_min = 0;
 	uint8_t lane = 0;
 	float length;
 	float calc_TimeToMergePoint();
 	float calc_BrakeDistance();
-	void calc_vRange(Other_CarNode other);
+	void calc_vRange(Other_CarNode &other);
 
 private:
 	float a_MAX; //车辆牵引力能提供的最大加速度
@@ -88,6 +96,14 @@ typedef enum
 	SLOWDOWN = 3,
 }SpeedMode_e;
 
-
+template <class T>
+T MIN(T n1, T n2);
+template <class T>
+T MIN(T n1, T n2, T n3);
+template <class T>
+T MAX(T n1, T n2);
+template <class T>
+T MAX(T n1, T n2, T n3);
 
 #endif 
+
