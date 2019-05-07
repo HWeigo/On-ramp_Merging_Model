@@ -14,8 +14,6 @@ void Other_CarNode::labeling(Master_CarNode master)
 	{
 		label = ArriveBeforeMaster;
 	}
-
-
 }
 
 //注，未添加异常处理
@@ -50,7 +48,7 @@ void Master_CarNode::calc_vRange(Other_CarNode &other)
 		delta_x = x_mergePoint - x_current;
 		x_tmp = delta_x - calc_SafeDistance(*this, other);
 		v_max = x_tmp / other.calc_TimeToMergePoint();
-		v_max = MIN(v_max, v_lastmax, v_MAX);
+		v_max = MIN(v_max, v_lastmax, v_MAX); //当前时刻最大速度中取小值
 	}break;
 	case ArriveAfterMaster:
 	{
@@ -63,19 +61,23 @@ void Master_CarNode::calc_vRange(Other_CarNode &other)
 		delta_x = x_mergePoint - x_current;
 		t_tmp = other.calc_TimeToMergePoint() - calc_SafeDistance(*this, other) / other.v_current;
 		v_min = delta_x / t_tmp;
-		v_min = MAX(v_min, v_lastmin, 0.0f);
+		v_min = MAX(v_min, v_lastmin, 0.0f); //当前时刻最大速度中取大值
 	}break;
 	default:
 		break;
 	}
 }
 
+//void Master_CarNode::adjustSpeed(Other_CarNode other)
+//{
+//
+//}
+
 template<class T>
 T MIN(T n1, T n2)
 {
 	return n1 < n2 ? n1 : n2;
 }
-
 template<class T>
 T MIN(T n1, T n2, T n3)
 {
@@ -87,7 +89,6 @@ T MAX(T n1, T n2)
 {
 	return n1 > n2 ? n1 : n2;
 }
-
 template<class T>
 T MAX(T n1, T n2, T n3)
 {
