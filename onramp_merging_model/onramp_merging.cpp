@@ -1,72 +1,66 @@
 #include "includes.h"
 
-MergeState_e MergeState = KEEPLANE;
-MergeState_e last_MergeState = KEEPLANE;
-SpeedMode_e SpeedMode = UNIFORMSPEED;
-
-Master_CarNode g_master;
-Other_CarNode g_other;
+#define MIN(A,B) ((A)<(B)? (A):(B)) 
+#define MAX(A,B) ((A)>(B)? (A):(B))
 
 
-//汇流状态机
-void MergeStateFSM(void)
+void Other_CarNode::labeling(Master_CarNode master)
 {
-	switch (MergeState)
+	if (master.calc_TimeToMergePoint() < calc_TimeToMergePoint())
 	{
-	case KEEPLANE:
+		label = ArriveAfterMaster;
+	}
+	else
 	{
-		checkMergingCondition_KL(g_master, g_other);
-	}break;
-	case PREPMERGE:
-	{
-		adjustSpeed_PREP(g_master,g_other);
-	}break;
-	case MERGE:
-	{
+		label = ArriveBeforeMaster;
+	}
 
+
+}
+
+//注，未添加异常处理
+float Other_CarNode::calc_TimeToMergePoint()
+{
+	return (x_mergePoint - x_current) / v_current;
+}
+
+float Master_CarNode::calc_TimeToMergePoint()
+{
+	return (x_mergePoint - x_current)/v_current;
+}
+
+float Master_CarNode::calc_BrakeDistance()
+{
+	return v_current * v_current / (a_safe * 2);
+}
+
+void Master_CarNode::calc_vRange(Other_CarNode other)
+{
+	switch (other.label)
+	{
+	case ArriveBeforeMaster:
+	{
+		float x_tmp;   //旁车到达MergePoint时，主车安全位置
+		float delta_x; //主车与MergePoint距离
+
+		delta_x = x_mergePoint - x_current;
+		x_tmp = delta_x - calc_SafeDistance(*this, other);
+		v_max = x_tmp / other.calc_TimeToMergePoint();
+		v_max = MIN(v_max, v_MAX); 
+	}break;
+	case ArriveAfterMaster:
+	{
+		float t_tmp; //t_tmp：以最小速度到达MergePoint的时间
+		float delta_x; //主车与MergePoint距离
+
+		delta_x = x_mergePoint - x_current;
+		t_tmp = other.calc_TimeToMergePoint() - calc_SafeDistance(*this, other) / other.v_current;
+		v_min = delta_x / t_tmp;
+		v_min = MAX(v_min, 0);
 	}break;
 	default:
 		break;
 	}
-	last_MergeState = MergeState;   //暂未使用
-}
-
-//KEEPLANE状态下监测是否可以汇流
-void checkMergingCondition_KL(const Master_CarNode master, const Other_CarNode other) 
-{
-	float delta_x = 0;
-	float MMS = 0;
-
-	delta_x = master.x - other.x;
-	MMS = calc_MMS(master, other);
-
-	if (delta_x > MMS) MergeState = PREPMERGE;    //满足汇流条件切换至PREPMERGE
-	else adjustSpeed_KL(master,other);            //否则调整速度
-
-	return;
-}
-
-void adjustSpeed_PREP(Master_CarNode master, Other_CarNode other)
-{
-	float delta_master2mergePoint;
-	float delta_other2mergePoint;
-
-	delta_master2mergePoint = master.x_mergePoint - master.x;
-	delta_other2mergePoint = master.x_mergePoint - other.x;
-
-	if (delta_master2mergePoint / master.v < delta_other2mergePoint / other.v)
-	{
-		SpeedMode = UNIFORMSPEED;
-	}
-	else
-	{
-		SpeedMode = SLOWDOWN;
-	}
-}
-
-void adjustSpeed_KL(Master_CarNode master, Other_CarNode other)
-{
-
 }
 
 

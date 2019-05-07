@@ -1,32 +1,36 @@
 #include "includes.h"
 
-float calc_LineSafeDistance(Master_CarNode master, Other_CarNode other)
+float calc_SafeDistance(Master_CarNode master, Other_CarNode other)
 {
-	if (other.v > master.v)
+	switch (other.label)
 	{
-		float tc, master_a;
-#ifdef RISK_MODE
-		master_a = master.a_max;
-#else
-		master_a = master.a_safe;
-#endif 
-		tc = (other.v - master.v) / master_a;
-
-		return master.length + master_a * tc * tc / 2;
-	}
-	else
+	case ArriveBeforeMaster:
 	{
-		return master.length;
+		if (other.v_current > master.v_current)
+		{
+			return master.calc_BrakeDistance() + other.length;
+		}
+		else
+		{
+			return master.calc_BrakeDistance() + other.length +
+				(master.v_current * master.v_current - other.v_current * other.v_current) / 2 / master.a_safe;
+		}
+	}
+	case ArriveAfterMaster:
+	{
+		if (master.v_current > other.v_current)
+		{
+			return master.calc_BrakeDistance() + master.length;
+		}
+		else
+		{
+			return master.calc_BrakeDistance() + master.length +
+				(other.v_current * other.v_current - master.v_current * master.v_current) / 2 / master.a_safe;
+		}
+	}
+	default:
+		break;
 	}
 }
 
-float calc_BrakeDistance(Master_CarNode master)
-{
-	return master.v * master.v / (master.a_safe * 2);
-}
-
-float calc_MMS(Master_CarNode master, Other_CarNode other)
-{
-	return calc_BrakeDistance(master) + calc_LineSafeDistance(master, other);
-}
 
