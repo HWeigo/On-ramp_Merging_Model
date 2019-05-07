@@ -22,6 +22,37 @@ float Other_CarNode::calc_TimeToMergePoint()
 	return (x_mergePoint - x_current) / v_current;
 }
 
+void Other_CarNode::calc_vRangeForMaster(Master_CarNode master)
+{
+	labeling(master);
+
+	switch (label)
+	{
+	case ArriveBeforeMaster:
+	{
+		float x_tmp;   //旁车到达MergePoint时，主车安全位置
+		float delta_x; //主车与MergePoint距离
+		float v_lastmax;
+
+		delta_x = x_mergePoint - master.x_current;
+		x_tmp = delta_x - calc_SafeDistance(master, *this);
+		v_MasterMax = x_tmp / calc_TimeToMergePoint();
+	}break;
+	case ArriveAfterMaster:
+	{
+		float t_tmp; //t_tmp：主车以最小速度到达MergePoint的时间
+		float delta_x; //主车与MergePoint距离
+		float v_lastmin;
+
+		delta_x = x_mergePoint - master.x_current;
+		t_tmp = calc_TimeToMergePoint() - calc_SafeDistance(master, *this) / v_current;
+		v_MasterMin = delta_x / t_tmp;
+	}break;
+	default:
+		break;
+	}
+}
+
 float Master_CarNode::calc_TimeToMergePoint()
 {
 	return (x_mergePoint - x_current)/v_current;
@@ -32,46 +63,29 @@ float Master_CarNode::calc_BrakeDistance()
 	return v_current * v_current / (a_safe * 2);
 }
 
-void Master_CarNode::calc_vRange(Other_CarNode &other)
+void Master_CarNode::calc_vRange(Other_CarNode *other)
 {
-	other.labeling(*this);
-	switch (other.label)
+	int i = 0;
+	while (other[i].v_current != -1)
 	{
-	case ArriveBeforeMaster:
-	{
-		float x_tmp;   //旁车到达MergePoint时，主车安全位置
-		float delta_x; //主车与MergePoint距离
-		float v_lastmax;
-
-		v_lastmax = v_max;
-
-		delta_x = x_mergePoint - x_current;
-		x_tmp = delta_x - calc_SafeDistance(*this, other);
-		v_max = x_tmp / other.calc_TimeToMergePoint();
-		v_max = MIN(v_max, v_lastmax, v_MAX); //当前时刻最大速度中取小值
-	}break;
-	case ArriveAfterMaster:
-	{
-		float t_tmp; //t_tmp：以最小速度到达MergePoint的时间
-		float delta_x; //主车与MergePoint距离
-		float v_lastmin;
-
-		v_lastmin = v_min;
-
-		delta_x = x_mergePoint - x_current;
-		t_tmp = other.calc_TimeToMergePoint() - calc_SafeDistance(*this, other) / other.v_current;
-		v_min = delta_x / t_tmp;
-		v_min = MAX(v_min, v_lastmin, 0.0f); //当前时刻最大速度中取大值
-	}break;
-	default:
-		break;
+		other[i].calc_vRangeForMaster(*this);
+		switch (other[i].label)
+		{
+		case ArriveBeforeMaster:
+		{
+			v_max = MIN(v_max, other[i].v_MasterMax, v_MAX);
+		}break;
+		case ArriveAfterMaster:
+		{
+			v_min = MAX(v_min, other[i].v_MasterMin, 0.0f);
+		}break;
+		default:
+			break;
+		}
+		++i;
 	}
 }
 
-//void Master_CarNode::adjustSpeed(Other_CarNode other)
-//{
-//
-//}
 
 template<class T>
 T MIN(T n1, T n2)

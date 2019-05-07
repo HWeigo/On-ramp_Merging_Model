@@ -10,7 +10,7 @@ int main()
 	g_master.length = 2;
 
 	g_other[0].v_current = 70;
-	g_other[0].x_current = -200;
+	g_other[0].x_current = 200;
 	g_other[0].length = 2;
 
 	g_other[1].v_current = 80;
@@ -25,10 +25,7 @@ int main()
 	g_other[3].x_current = -100;
 	g_other[3].length = 2;
 
-	for (int i = 0; g_other[i].v_current != -1; ++i)
-	{
-		g_master.calc_vRange(g_other[i]);
-	}
+	g_master.calc_vRange(g_other);
 
 #ifdef DEBUG
 
@@ -42,7 +39,7 @@ int main()
 		cout << "Other[" << i << "] \n";
 		cout << "Other's velocity: " << g_other[i].v_current << '\n';
 		cout << "Other's coordinate: " << g_other[i].x_current << '\n' ;
-		cout << "Other' label: " << g_other[i].label << '\n' << endl;
+		cout << "Other' label: " << g_other[i].label << '\n' << endl;		
 	}
 
 	cout << "v_max: " << g_master.v_max << '\n';

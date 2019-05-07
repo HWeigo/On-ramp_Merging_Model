@@ -50,7 +50,7 @@ public:
 	float length;
 	float calc_TimeToMergePoint();
 	float calc_BrakeDistance();
-	void calc_vRange(Other_CarNode &other);
+	void calc_vRange(Other_CarNode *other);
 	//void adjustSpeed(Other_CarNode other);
 
 private:
@@ -87,8 +87,11 @@ public:
 	uint8_t lane = 1; //未使用
 	float length = 2;
 	Label_e label = None;
+	float v_MasterMax = -1;
+	float v_MasterMin = -1;
 	void labeling(Master_CarNode master);
 	float calc_TimeToMergePoint();
+	void calc_vRangeForMaster(Master_CarNode master);
 };
 
 //返回最小值
