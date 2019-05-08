@@ -51,7 +51,7 @@ public:
 	float calc_TimeToMergePoint();
 	float calc_BrakeDistance();
 	void calc_vRange(Other_CarNode *other);
-	//void adjustSpeed(Other_CarNode other);
+	void adjustSpeed(Other_CarNode *other);
 
 private:
 	float a_MAX; //车辆牵引力能提供的最大加速度
@@ -74,7 +74,8 @@ typedef enum
 * \param length 车长
 * \param label 旁车标签
 * 【None：无，ArriveBeforeMaster：比主车先到汇流点，ArriveAfterMaster：比主车后到汇流点】
-*
+* \param v_MasterMax 对应master的最大速度（ArriveBeforeMaster）
+* \param v_MasterMin 对应master的最小速度（ArriveAfterMaster）
 * \func labeling 打标签
 * \func calc_TimeToMergePoint() 返回到达汇流点时间
 */

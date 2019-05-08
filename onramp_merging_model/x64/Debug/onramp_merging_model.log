@@ -1,6 +1,4 @@
-﻿  main.cpp
-  onramp_merging.cpp
-d:\intelligentvehiclelabs\onramp_merging_model\cpp_version\onramp_merging_model\onramp_merging_model\onramp_merging.cpp(35): warning C4101: “v_lastmax”: 未引用的局部变量
-d:\intelligentvehiclelabs\onramp_merging_model\cpp_version\onramp_merging_model\onramp_merging_model\onramp_merging.cpp(45): warning C4101: “v_lastmin”: 未引用的局部变量
-  正在生成代码...
+﻿  onramp_merging.cpp
+d:\intelligentvehiclelabs\onramp_merging_model\cpp_version\onramp_merging_model\onramp_merging_model\onramp_merging.cpp(39): warning C4101: “v_lastmax”: 未引用的局部变量
+d:\intelligentvehiclelabs\onramp_merging_model\cpp_version\onramp_merging_model\onramp_merging_model\onramp_merging.cpp(49): warning C4101: “v_lastmin”: 未引用的局部变量
   onramp_merging_model.vcxproj -> D:\IntelligentVehicleLabs\onramp_merging_model\cpp_version\onramp_merging_model\x64\Debug\onramp_merging_model.exe
